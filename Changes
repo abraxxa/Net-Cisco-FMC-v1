@@ -1,0 +1,4 @@
+Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
+
+{{ $NEXT }}
+    - Initial release using the JSON REST API version 1
