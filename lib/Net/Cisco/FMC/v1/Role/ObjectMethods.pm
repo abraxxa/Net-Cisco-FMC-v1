@@ -11,6 +11,8 @@ use Moo::Role; # last for cleanup
 
 no warnings "experimental::signatures";
 
+requires qw( _create _list _get _update _delete );
+
 =head1 SYNOPSIS
 
     package Net::Cisco::FMC::v1;
@@ -111,83 +113,52 @@ role {
     my $mop    = shift;
 
     $mop->method('create_' . $params->{singular} => sub ($self, $object_data) {
-        my $res = $self->post(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, $params->{path}, $params->{object}), $object_data);
-        my $code = $res->code;
-        my $data = $res->data;
-        croak($data->{error}->{messages}[0]->{description})
-            unless $code == 201;
-        return $data;
+        return $self->_create(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            $params->{path},
+            $params->{object}
+        ), $object_data);
     });
 
     $mop->method('list_' . $params->{object} => sub ($self, $query_params = {}) {
-        # the API only allows 1000 objects at a time
-        # work around that by making multiple API calls
-        my $offset = 0;
-        my $limit = 1000;
-        my $more_data_available = 1;
-        my @items;
-        while ($more_data_available) {
-            my $res = $self->get(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, $params->{path}, $params->{object}),
-                { offset => $offset, limit => $limit, %$query_params });
-            my $code = $res->code;
-            my $data = $res->data;
-
-            croak($data->{error}->{messages}[0]->{description})
-                unless $code == 200;
-
-            push @items, $data->{items}->@*
-                if exists $data->{items} && ref $data->{items} eq 'ARRAY';
-
-            # check if more data is available
-            if ($offset + $limit < $data->{paging}->{count}) {
-                $more_data_available = 1;
-                $offset += $limit;
-            }
-            else {
-                $more_data_available = 0;
-            }
-        }
-
-        # return response similar to FMC API
-        return { items => \@items };
+        return $self->_list(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            $params->{path},
+            $params->{object}
+        ), $query_params);
     });
 
     $mop->method('get_' . $params->{singular} => sub ($self, $id, $query_params = {}) {
-        my $res = $self->get(join('/', '/api/fmc_config/v1/domain',
-                $self->domain_uuid, $params->{path}, $params->{object}, $id), $query_params);
-        my $code = $res->code;
-        my $data = $res->data;
-
-        croak($data->{error}->{messages}[0]->{description})
-            unless $code == 200;
-
-        return $data;
+        return $self->_get(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            $params->{path},
+            $params->{object},
+            $id
+        ), $query_params);
     });
 
     $mop->method('update_' . $params->{singular} => sub ($self, $object, $object_data) {
         my $id = $object->{id};
-        my $updated_data = clone($object);
-        delete $updated_data->{links};
-        delete $updated_data->{metadata};
-        $updated_data = { %$updated_data, %$object_data };
-
-        my $res = $self->put(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, $params->{path}, $params->{object}, $id),
-            $updated_data);
-        my $code = $res->code;
-        my $data = $res->data;
-        my $errmsg = ref $data eq 'HASH'
-            ? $data->{error}->{messages}[0]->{description}
-            : $data;
-        croak($errmsg)
-            unless $code == 200;
-        return $data;
+        return $self->_update(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            $params->{path},
+            $params->{object},
+            $id
+        ), $object, $object_data);
     });
 
     $mop->method('delete_' . $params->{singular} => sub ($self, $id) {
-        my $res = $self->delete(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, $params->{path}, $params->{object}, $id));
-        croak($res->data->{error}->{messages}[0]->{description})
-            unless $res->code == 200;
-        return 1;
+        return $self->_delete(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            $params->{path},
+            $params->{object},
+            $id
+        ));
     });
 
     $mop->method('find_' . $params->{singular} => sub ($self, $query_params = {}) {

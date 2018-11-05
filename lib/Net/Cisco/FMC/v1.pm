@@ -88,6 +88,87 @@ has '_refresh_token' => (
 
 with 'Net::Cisco::FMC::v1::Role::REST::Client';
 
+sub _create ($self, $url, $object_data) {
+    my $res = $self->post($url, $object_data);
+    my $code = $res->code;
+    my $data = $res->data;
+    croak($data->{error}->{messages}[0]->{description})
+        unless $code == 201;
+    return $data;
+}
+
+sub _list ($self, $url, $query_params = {}) {
+    # the API only allows 1000 objects at a time
+    # work around that by making multiple API calls
+    my $offset = 0;
+    my $limit = 1000;
+    my $more_data_available = 1;
+    my @items;
+    while ($more_data_available) {
+        my $res = $self->get($url, {
+            offset => $offset,
+            limit => $limit,
+            %$query_params,
+        });
+        my $code = $res->code;
+        my $data = $res->data;
+
+        croak($data->{error}->{messages}[0]->{description})
+            unless $code == 200;
+
+        push @items, $data->{items}->@*
+            if exists $data->{items} && ref $data->{items} eq 'ARRAY';
+
+        # check if more data is available
+        if ($offset + $limit < $data->{paging}->{count}) {
+            $more_data_available = 1;
+            $offset += $limit;
+        }
+        else {
+            $more_data_available = 0;
+        }
+    }
+
+    # return response similar to FMC API
+    return { items => \@items };
+}
+
+sub _get ($self, $url, $query_params = {}) {
+    my $res = $self->get($url, $query_params);
+    my $code = $res->code;
+    my $data = $res->data;
+
+    croak($data->{error}->{messages}[0]->{description})
+        unless $code == 200;
+
+    return $data;
+}
+
+sub _update ($self, $url, $object, $object_data) {
+    my $updated_data = clone($object);
+    delete $updated_data->{links};
+    delete $updated_data->{metadata};
+    $updated_data = { %$updated_data, %$object_data };
+
+    my $res = $self->put($url, $updated_data);
+    my $code = $res->code;
+    my $data = $res->data;
+    my $errmsg = ref $data eq 'HASH'
+        ? $data->{error}->{messages}[0]->{description}
+        : $data;
+    croak($errmsg)
+        unless $code == 200;
+
+    return $data;
+}
+
+sub _delete ($self, $url) {
+    my $res = $self->delete($url);
+    croak($res->data->{error}->{messages}[0]->{description})
+        unless $res->code == 200;
+    return 1;
+}
+
 Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
     {
         path     => 'object',
