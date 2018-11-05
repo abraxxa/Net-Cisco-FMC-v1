@@ -56,6 +56,11 @@ No workaround on client side possible, only a FMC update helps.
 
 Workaround by logging in again.
 
+=item accessrule is created but error 'You do not have the required
+authorization to do this operation' is thrown (version 6.2.2)
+
+No workaround on client side possible, only a FMC update helps.
+
 =back
 
 =cut
@@ -259,26 +264,14 @@ Takes an access policy id and a hashref of the rule which should be created.
 =cut
 
 sub create_accessrule ($self, $accesspolicy_id, $object_data) {
-    my $res = $self->post(join('/',
+    return $self->_create(join('/',
             '/api/fmc_config/v1/domain',
-            $self->domain_uuid, 'policy', 'accesspolicies', $accesspolicy_id,
-            'accessrules'),
-        $object_data);
-    my $code = $res->code;
-    my $data = $res->data;
-    #say Dumper($object_data);
-    #say Dumper($data);
-    croak("create accessrule '" . $object_data->{name}
-        . "' in policy '$accesspolicy_id' failed: '"
-        . $data->{error}->{messages}[0]->{description}
-        . "'")
-        unless $code == 201
-            # FMC 6.2.2 bug: accessrule is created but this error is
-            # thrown
-            || $data->{error}->{messages}[0]->{description}
-            =~ /You do not have the required authorization to do this operation/;
-    say "\taccessrule $object_data->{name} created";
-    return $data;
+            $self->domain_uuid,
+            'policy',
+            'accesspolicies',
+            $accesspolicy_id,
+            'accessrules'
+        ), $object_data);
 }
 
 =method list_accessrules
@@ -289,36 +282,14 @@ single key 'items' that has a list of access rules similar to the FMC API.
 =cut
 
 sub list_accessrules ($self, $accesspolicy_id, $query_params = {}) {
-    # the API only allows 1000 objects at a time
-    # work around that by making multiple API calls
-    my $offset = 0;
-    my $limit = 1000;
-    my $more_data_available = 1;
-    my @items;
-    while ($more_data_available) {
-        my $res = $self->get(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, 'policy', 'accesspolicies', $accesspolicy_id, 'accessrules'),
-            { offset => $offset, limit => $limit, %$query_params });
-        my $code = $res->code;
-        my $data = $res->data;
-
-        croak($data->{error}->{messages}[0]->{description})
-            unless $code == 200;
-
-        push @items, $data->{items}->@*
-            if exists $data->{items} && ref $data->{items} eq 'ARRAY';
-
-        # check if more data is available
-        if ($offset + $limit < $data->{paging}->{count}) {
-            $more_data_available = 1;
-            $offset += $limit;
-        }
-        else {
-            $more_data_available = 0;
-        }
-    }
-
-    # return response similar to FMC API
-    return { items => \@items };
+    return $self->_list(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'accessrules'
+    ), $query_params);
 }
 
 =method get_accessrule
@@ -329,12 +300,15 @@ rule.
 =cut
 
 sub get_accessrule ($self, $accesspolicy_id, $id, $query_params = {}) {
-    my $res = $self->get(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, 'policy', 'accesspolicies', $accesspolicy_id, 'accessrules', $id),
-        $query_params );
-    my $code = $res->code;
-    my $data = $res->data;
-    #say Dumper($res);
-    return $code == 200 ? $data : {};
+    return $self->_get(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'accessrules',
+        $id
+    ), $query_params);
 }
 
 =method update_accessrule
@@ -346,21 +320,15 @@ a hashref of the updated access rule.
 
 sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
     my $id = $object->{id};
-    my $updated_data = clone($object);
-    delete $updated_data->{links};
-    delete $updated_data->{metadata};
-    #delete $updated_data->{commentHistoryList};
-    $updated_data = { %$updated_data, %$object_data };
-
-    my $res = $self->put(join('/', '/api/fmc_config/v1/domain', $self->domain_uuid, 'policy', 'accesspolicies', $accesspolicy_id, 'accessrules', $id),
-        $updated_data);
-    my $code = $res->code;
-    my $data = $res->data;
-    croak($data->{error}->{messages}[0]->{description})
-        unless $code == 200;
-    #say Dumper($data);
-    say "accessrule $object->{name} updated";
-    return $data;
+    return $self->_update(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'accessrules',
+        $id
+    ), $object, $object_data);
 }
 
 =method cleanup_protocolport
