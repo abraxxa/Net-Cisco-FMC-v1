@@ -331,6 +331,28 @@ sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
     ), $object, $object_data);
 }
 
+=method delete_accessrule
+
+Takes an access policy id and a rule object id.
+
+Returns true on success.
+
+=cut
+
+
+sub delete_accessrule ($self, $accesspolicy_id, $id) {
+    return $self->_delete(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'accessrules',
+        $id
+    ));
+}
+
+
 =method cleanup_protocolport
 
 Takes a ProtocolPortObject and renames it to protocol_port, e.g. tcp_443.
