@@ -482,7 +482,7 @@ sub cleanup_hosts($self) {
 
 Takes an access policy name and a hashref of optional arguments.
 
-=head2 Optional arguments
+=head3 Optional arguments
 
 =over
 
