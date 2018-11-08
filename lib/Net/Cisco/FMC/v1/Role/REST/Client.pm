@@ -24,7 +24,7 @@ before '_call' => sub {
 };
 
 around '_call' => sub($orig, $self, @params) {
-    my $try_count = 3;
+    my $try_count = 20;
     my $try_timeout = 3;
 
     return retry $try_count, $try_timeout,
