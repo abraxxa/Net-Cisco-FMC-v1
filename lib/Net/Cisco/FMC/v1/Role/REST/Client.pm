@@ -32,12 +32,6 @@ around '_call' => sub($orig, $self, @params) {
             my $n = shift;
             warn "api call retry #$n\n"
                 if $n > 1;
-            # FIXME: the 6.2.2.1 API doesn't responde to the 11th call which
-            # triggers this error
-            if ($n == $try_count) {
-                warn "last retry, logging in again\n";
-                $self->relogin;
-            }
             return $orig->($self, @params);
         }, sub {
             my $res = shift;

@@ -54,7 +54,8 @@ No workaround on client side possible, only a FMC update helps.
 
 =item no response to the 11th call (version 6.2.2.1)
 
-Workaround by logging in again.
+No workaround on client side because newer FMC versions (at least 6.2.3.6)
+throttle the login call too.
 
 =item accessrule is created but error 'You do not have the required
 authorization to do this operation' is thrown (version 6.2.2)

@@ -1,6 +1,7 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+    - fix recursive relogins when 429 too many requests is returned by the API
 
 0.001001  2018-11-05 17:14:28+01:00 Europe/Vienna
     - Initial release using the JSON REST API version 1
