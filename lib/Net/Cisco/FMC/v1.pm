@@ -198,6 +198,11 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
     },
     {
         path     => 'object',
+        object   => 'interfacegroups',
+        singular => 'interfacegroup',
+    },
+    {
+        path     => 'object',
         object   => 'networkgroups',
         singular => 'networkgroup',
     },
@@ -210,6 +215,41 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
         path     => 'object',
         object   => 'hosts',
         singular => 'host',
+    },
+    {
+        path     => 'object',
+        object   => 'ranges',
+        singular => 'range',
+    },
+    {
+        path     => 'object',
+        object   => 'securityzones',
+        singular => 'securityzone',
+    },
+    {
+        path     => 'object',
+        object   => 'slamonitors',
+        singular => 'slamonitor',
+    },
+    {
+        path     => 'object',
+        object   => 'urlgroups',
+        singular => 'urlgroup',
+    },
+    {
+        path     => 'object',
+        object   => 'urls',
+        singular => 'url',
+    },
+    {
+        path     => 'object',
+        object   => 'vlangrouptags',
+        singular => 'vlangrouptag',
+    },
+    {
+        path     => 'object',
+        object   => 'vlantags',
+        singular => 'vlantag',
     },
     {
         path     => 'policy',
