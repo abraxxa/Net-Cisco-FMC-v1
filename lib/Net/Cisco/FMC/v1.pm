@@ -242,6 +242,9 @@ sub login($self) {
         $self->set_persistent_header('X-auth-access-token',
             $res->response->header('x-auth-access-token'));
     }
+    else {
+        croak($res->data->{error}->{messages}[0]->{description});
+    }
 }
 
 =method relogin
