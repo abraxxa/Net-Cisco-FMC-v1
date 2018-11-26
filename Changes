@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+
+0.002001  2018-11-26 14:52:43+01:00 Europe/Vienna
     - fix recursive relogins when 429 too many requests is returned by the API
     - increased number of retries from 3 to 20
     - throw error on unsuccessful login
