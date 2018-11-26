@@ -46,11 +46,6 @@ around '_call' => sub($orig, $self, @params) {
                 warn "timeout, retrying in $try_timeout seconds\n";
                 return 1;
             }
-            elsif ($res->code == 401) {
-                warn "unauthorized, logging in again\n";
-                $self->relogin;
-                return 1;
-            }
             #elsif ($res->response->is_error ) {
             #    warn 'code ' . $res->code . ': ' . $res->data;
             #}
