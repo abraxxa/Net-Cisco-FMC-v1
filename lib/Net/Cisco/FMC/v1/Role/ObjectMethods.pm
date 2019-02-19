@@ -166,9 +166,17 @@ role {
         for my $object ($self->$listname({ expanded => 'true' })->{items}->@*) {
             my $identical = 1;
             for my $key (keys $query_params->%*) {
-                if ($object->{$key} ne $query_params->{$key}) {
-                    $identical = 0;
-                    last;
+                if ( ref $query_params->{$key} eq 'Regexp') {
+                    if ($object->{$key} !~ $query_params->{$key}) {
+                        $identical = 0;
+                        last;
+                    }
+                }
+                else {
+                    if ($object->{$key} ne $query_params->{$key}) {
+                        $identical = 0;
+                        last;
+                    }
                 }
             }
             if ($identical) {

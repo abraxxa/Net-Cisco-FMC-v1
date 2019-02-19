@@ -2,6 +2,7 @@ Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
     - add support for query parameters to create_accessrule
+    - add filtering by regex to find_$singular object methods
 
 0.002001  2018-11-26 14:52:43+01:00 Europe/Vienna
     - fix recursive relogins when 429 too many requests is returned by the API
