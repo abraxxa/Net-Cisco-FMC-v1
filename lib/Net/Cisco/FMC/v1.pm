@@ -94,8 +94,9 @@ has '_refresh_token' => (
 
 with 'Net::Cisco::FMC::v1::Role::REST::Client';
 
-sub _create ($self, $url, $object_data) {
-    my $res = $self->post($url, $object_data);
+sub _create ($self, $url, $object_data, $query_params = {}) {
+    my $params = $self->user_agent->www_form_urlencode( $query_params );
+    my $res = $self->post("$url?$params", $object_data);
     my $code = $res->code;
     my $data = $res->data;
     croak($data->{error}->{messages}[0]->{description})
@@ -303,11 +304,12 @@ sub relogin($self) {
 
 =method create_accessrule
 
-Takes an access policy id and a hashref of the rule which should be created.
+Takes an access policy id, a hashref of the rule which should be created and
+optional query parameters.
 
 =cut
 
-sub create_accessrule ($self, $accesspolicy_id, $object_data) {
+sub create_accessrule ($self, $accesspolicy_id, $object_data, $query_params = {}) {
     return $self->_create(join('/',
             '/api/fmc_config/v1/domain',
             $self->domain_uuid,
@@ -315,7 +317,7 @@ sub create_accessrule ($self, $accesspolicy_id, $object_data) {
             'accesspolicies',
             $accesspolicy_id,
             'accessrules'
-        ), $object_data);
+        ), $object_data, $query_params);
 }
 
 =method list_accessrules
