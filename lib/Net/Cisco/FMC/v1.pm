@@ -68,7 +68,7 @@ No workaround on client side possible, only a FMC update helps.
 =attr domains
 
 Returns a list of hashrefs containing name and uuid of all domains which gets
-populated by L<login>.
+populated by L</login>.
 
 =cut
 
