@@ -42,7 +42,6 @@ no warnings "experimental::signatures";
 This module is a client library for the Cisco Firepower Management
 Center (FMC) REST API version 1.
 Currently it is developed and tested against FMC version 6.2.3.6.
-Older FMC versions have bugs like:
 
 =head1 KNOWN BUGS
 
