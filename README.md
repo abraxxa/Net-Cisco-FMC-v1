@@ -146,6 +146,8 @@ Supports resuming.
 
 # KNOWN BUGS
 
+Older FMC versions have bugs like:
+
 - truncated JSON responses
 
     No workaround on client side possible, only a FMC update helps.

@@ -45,6 +45,8 @@ Currently it is developed and tested against FMC version 6.2.3.6.
 
 =head1 KNOWN BUGS
 
+Older FMC versions have bugs like:
+
 =over
 
 =item truncated JSON responses
