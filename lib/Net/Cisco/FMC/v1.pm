@@ -156,6 +156,7 @@ sub _update ($self, $url, $object, $object_data) {
     my $updated_data = clone($object);
     delete $updated_data->{links};
     delete $updated_data->{metadata};
+    delete $updated_data->{error};
     $updated_data = { %$updated_data, %$object_data };
 
     my $res = $self->put($url, $updated_data);
