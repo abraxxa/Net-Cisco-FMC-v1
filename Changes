@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+    - add tests which require the FMC, policy name, username and password set
+      in environment variables
 
 0.003001  2019-03-12 16:09:16+01:00 Europe/Vienna
     - add support for query parameters to create_accessrule
