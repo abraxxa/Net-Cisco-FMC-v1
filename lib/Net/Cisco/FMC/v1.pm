@@ -259,6 +259,16 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
         object   => 'accesspolicies',
         singular => 'accesspolicy',
     },
+    {
+        path     => 'object',
+        object   => 'networkaddresses',
+        singular => 'networkaddress',
+    },
+    {
+        path     => 'object',
+        object   => 'ports',
+        singular => 'port',
+    },
 ]);
 
 =method login
