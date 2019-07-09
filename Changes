@@ -5,6 +5,7 @@ Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
       in environment variables
     - add methods for networkaddresses and ports
     - fix update on response returned from a previous update
+    - fix update_accessrule when rule contains users
 
 0.003001  2019-03-12 16:09:16+01:00 Europe/Vienna
     - add support for query parameters to create_accessrule

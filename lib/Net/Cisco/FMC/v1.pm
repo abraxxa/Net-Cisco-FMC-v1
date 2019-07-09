@@ -378,6 +378,10 @@ a hashref of the updated access rule.
 
 sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
     my $id = $object->{id};
+    my $fmc_rule = clone($object);
+    for my $user ($fmc_rule->{users}->{objects}->@*) {
+        delete $user->{realm};
+    }
     return $self->_update(join('/',
         '/api/fmc_config/v1/domain',
         $self->domain_uuid,
@@ -386,7 +390,7 @@ sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
         $accesspolicy_id,
         'accessrules',
         $id
-    ), $object, $object_data);
+    ), $fmc_rule, $object_data);
 }
 
 =method delete_accessrule
