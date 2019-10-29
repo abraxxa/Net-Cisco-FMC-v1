@@ -5,7 +5,7 @@ package Net::Cisco::FMC::v1::Role::FixAccessruleLiterals;
 use 5.024;
 use feature 'signatures';
 use NetAddr::IP::Lite ':nofqdn';
-use Role::Tiny;
+use Moo::Role;
 
 no warnings "experimental::signatures";
 
@@ -16,7 +16,7 @@ requires qw( get_accessrule list_accessrules );
     use strict;
     use warnings;
     use Net::Cisco::FMC::v1;
-    use Role::Tiny ();
+    use Moo::Role ();
 
     my $fmc = Net::Cisco::FMC::v1->new(
         server      => 'https://fmcrestapisandbox.cisco.com',
@@ -25,7 +25,7 @@ requires qw( get_accessrule list_accessrules );
         clientattrs => { timeout => 30 },
     );
 
-    Role::Tiny->apply_roles_to_object($fmc,
+    Moo::Role->apply_roles_to_object($fmc,
         'Net::Cisco::FMC::v1::Role::FixAccessruleLiterals');
 
 =head1 DESCRIPTION
