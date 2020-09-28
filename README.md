@@ -4,7 +4,7 @@ Net::Cisco::FMC::v1 - Cisco Firepower Management Center (FMC) API version 1 clie
 
 # VERSION
 
-version 0.004002
+version 0.005001
 
 # SYNOPSIS
 
@@ -84,6 +84,32 @@ a hashref of the updated access rule.
 Takes an access policy id and a rule object id.
 
 Returns true on success.
+
+## list\_deployabledevices
+
+Takes optional query parameters and returns a hashref with a
+single key 'items' that has a list of deployable devices similar to the FMC
+API.
+
+## create\_deploymentrequest
+
+Takes a hashref of deployment parameters.
+
+Returns the created task in the ->{metadata}->{task} hashref.
+
+## get\_task
+
+Takes a task id and returns its status.
+
+## wait\_for\_task
+
+Takes a task id and an optional callback and checks its status every second
+until it isn't in-progress any more.
+The in-progress status is different for each task type, currently only
+'DEVICE\_DEPLOYMENT' is supported.
+The callback coderef which is called for every check with the task as argument.
+
+Returns the task.
 
 ## cleanup\_protocolport
 
