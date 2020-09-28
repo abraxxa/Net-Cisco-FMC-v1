@@ -475,6 +475,41 @@ sub get_task ($self, $id) {
     ));
 }
 
+=method wait_for_task
+
+Takes a task id and an optional callback and checks its status every second
+until it isn't in-progress any more.
+The in-progress status is different for each task type, currently only
+'DEVICE_DEPLOYMENT' is supported.
+The callback coderef which is called for every check with the task as argument.
+
+Returns the task.
+
+=cut
+
+sub wait_for_task ($self, $id, $callback) {
+    croak "id missing"
+        unless defined $id;
+    croak "callback must be a coderef"
+        if defined $callback && ref $callback ne 'CODE';
+
+    my %in_progress_status_for_type = (
+        DEVICE_DEPLOYMENT => 'Deploying',
+    );
+
+    my $task = $self->get_task($id);
+    die "support for task type '$task->{taskType}' not implemented\n"
+        unless exists $in_progress_status_for_type{$task->{taskType}};
+    do {
+        &$callback($task)
+            if defined $callback;
+        sleep 1;
+        $task = $self->get_task($id);
+    } until (
+        $task->{status} ne $in_progress_status_for_type{$task->{taskType}});
+    return $task;
+}
+
 =method cleanup_protocolport
 
 Takes a ProtocolPortObject and renames it to protocol_port, e.g. tcp_443.
