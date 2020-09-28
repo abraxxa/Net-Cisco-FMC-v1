@@ -95,13 +95,13 @@ has '_refresh_token' => (
 
 with 'Net::Cisco::FMC::v1::Role::REST::Client';
 
-sub _create ($self, $url, $object_data, $query_params = {}) {
+sub _create ($self, $url, $object_data, $query_params = {}, $expected_code = 201) {
     my $params = $self->user_agent->www_form_urlencode( $query_params );
     my $res = $self->post("$url?$params", $object_data);
     my $code = $res->code;
     my $data = $res->data;
     croak($data->{error}->{messages}[0]->{description})
-        unless $code == 201;
+        unless $code == $expected_code;
     return $data;
 }
 
@@ -269,6 +269,16 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
         object   => 'ports',
         singular => 'port',
     },
+    {
+        path     => 'devices',
+        object   => 'devicerecords',
+        singular => 'devicerecord',
+    },
+    {
+        path     => 'assignment',
+        object   => 'policyassignments',
+        singular => 'policyassignment',
+    },
 ]);
 
 =method login
@@ -414,6 +424,56 @@ sub delete_accessrule ($self, $accesspolicy_id, $id) {
     ));
 }
 
+=method list_deployabledevices
+
+Takes optional query parameters and returns a hashref with a
+single key 'items' that has a list of deployable devices similar to the FMC
+API.
+
+=cut
+
+sub list_deployabledevices ($self, $query_params = {}) {
+    return $self->_list(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'deployment',
+        'deployabledevices'
+    ), $query_params);
+}
+
+=method create_deploymentrequest
+
+Takes a hashref of deployment parameters.
+
+Returns the created task in the ->{metadata}->{task} hashref.
+
+=cut
+
+sub create_deploymentrequest ($self, $object_data) {
+    my $data = $self->_create(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'deployment',
+        'deploymentrequests'
+    ), $object_data, {}, 202);
+    return $data;
+}
+
+=method get_task
+
+Takes a task id and returns its status.
+
+=cut
+
+sub get_task ($self, $id) {
+    return $self->_get(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'job',
+        'taskstatuses',
+        $id
+    ));
+}
 
 =method cleanup_protocolport
 
