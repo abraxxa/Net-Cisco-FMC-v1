@@ -35,8 +35,20 @@ around '_call' => sub($orig, $self, @params) {
             return $orig->($self, @params);
         }, sub {
             my $res = shift;
+            # relogin and retry when access token has become invalid
+            if ($res->code == 401
+               && ref $res->data eq 'HASH'
+               && exists $res->data->{error}
+               && exists $res->data->{error}->{messages}
+               && ref $res->data->{error}->{messages} eq 'ARRAY'
+               && exists $res->data->{error}->{messages}[0]->{description}
+               && $res->data->{error}->{messages}[0]->{description} =~ /Access token invalid/) {
+               warn "access token invalid, relogin and retrying in $try_timeout seconds\n";
+               $self->relogin;
+               return 1;
+            }
             # retry on error 429
-            if ($res->code == 429) {
+            elsif ($res->code == 429) {
                 warn "got error 429 too many requests, retrying in $try_timeout seconds\n";
                 return 1;
             }
