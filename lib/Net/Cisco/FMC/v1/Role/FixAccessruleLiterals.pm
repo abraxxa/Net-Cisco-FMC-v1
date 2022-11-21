@@ -37,7 +37,7 @@ existing rule or creating a new one based on a reply silently swallows literal
 host and network objects which have their type set to FQDN.
 
 This role works around this bug by modifying the reply of
-L</Net::Cisco::FMC::v1/get_accessrule> and
+L<Net::Cisco::FMC::v1/get_accessrule> and
 L<Net::Cisco::FMC::v1/list_accessrules> and replacing 'FQDN' with 'Network'.
 
 This is how an accessrule API response looks like in 6.2.3.7:
