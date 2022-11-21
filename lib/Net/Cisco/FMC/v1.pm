@@ -3,6 +3,7 @@ package Net::Cisco::FMC::v1;
 # ABSTRACT: Cisco Firepower Management Center (FMC) API version 1 client library
 
 use 5.024;
+use utf8;
 use Moo;
 use feature 'signatures';
 use Types::Standard qw( ArrayRef Dict Str );
