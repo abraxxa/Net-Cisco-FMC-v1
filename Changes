@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+
+0.006002  2022-11-21 11:34:38+01:00 Europe/Vienna
     - fix missing source encoding
     - fix incorrect 'get_accessrule' link in ::Role::FixAccessruleLiterals
 
