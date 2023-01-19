@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+
+0.007000  2023-01-19 18:12:02+01:00 Europe/Vienna
     - add logout method
 
 0.006002  2022-11-21 11:34:38+01:00 Europe/Vienna
