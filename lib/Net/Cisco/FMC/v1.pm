@@ -76,8 +76,9 @@ populated by L</login>.
 =cut
 
 has 'domains' => (
-    is => 'rwp',
-    isa => ArrayRef[Dict[name => Str, uuid => Str]],
+    is      => 'rwp',
+    isa     => ArrayRef[Dict[name => Str, uuid => Str]],
+    clearer => 1,
 );
 
 =attr domain_uuid
@@ -87,11 +88,13 @@ The UUID of the domain which is used by all methods.
 =cut
 
 has 'domain_uuid' => (
-    is => 'rw',
+    is      => 'rw',
+    clearer => 1,
 );
 
 has '_refresh_token' => (
-    is => 'rw',
+    is      => 'rw',
+    clearer => 1,
 );
 
 with 'Net::Cisco::FMC::v1::Role::REST::Client';
@@ -323,6 +326,25 @@ sub relogin($self) {
     $self->login;
     $self->domain_uuid($domain_uuid)
         if defined $domain_uuid && $domain_uuid ne '';
+}
+
+=method logout
+
+Logs out of the FMC.
+
+=cut
+
+sub logout($self) {
+    my $res = $self->post('/api/fmc_platform/v1/auth/revokeaccess');
+    if ($res->code == 204) {
+        $self->clear_domains;
+        $self->clear_domain_uuid;
+        $self->_clear_refresh_token;
+        $self->clear_persistent_headers;
+    }
+    else {
+        croak($res->data->{error}->{messages}[0]->{description});
+    }
 }
 
 =method create_accessrule

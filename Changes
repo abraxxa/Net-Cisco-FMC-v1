@@ -1,6 +1,7 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+    - add logout method
 
 0.006002  2022-11-21 11:34:38+01:00 Europe/Vienna
     - fix missing source encoding
