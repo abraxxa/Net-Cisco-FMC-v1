@@ -50,7 +50,8 @@ ok(my $policy = $fmc->create_accesspolicy({
 END {
     $fmc->delete_accesspolicy($policy->{id})
         if defined $policy;
-    $fmc->logout;
+    $fmc->logout
+        if defined $fmc;
 }
 
 ok(my $accessrules = $fmc->list_accessrules($policy->{id}),

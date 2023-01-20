@@ -1,6 +1,7 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+    - fix api.t when FMC environment variables aren't set
 
 0.007000  2023-01-19 18:12:02+01:00 Europe/Vienna
     - add logout method
