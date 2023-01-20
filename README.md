@@ -4,7 +4,7 @@ Net::Cisco::FMC::v1 - Cisco Firepower Management Center (FMC) API version 1 clie
 
 # VERSION
 
-version 0.007000
+version 0.007001
 
 # SYNOPSIS
 
