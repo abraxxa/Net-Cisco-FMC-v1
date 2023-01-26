@@ -230,6 +230,11 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
     },
     {
         path     => 'object',
+        object   => 'fqdns',
+        singular => 'fqdn',
+    },
+    {
+        path     => 'object',
         object   => 'securityzones',
         singular => 'securityzone',
     },
