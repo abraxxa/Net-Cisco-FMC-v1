@@ -1,2 +1,3 @@
 /.build/
 /Net-Cisco-FMC-v1-*
+.envrc
