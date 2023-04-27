@@ -156,14 +156,15 @@ sub _get ($self, $url, $query_params = {}) {
     return $data;
 }
 
-sub _update ($self, $url, $object, $object_data) {
+sub _update ($self, $url, $object, $object_data, $query_params = {}) {
     my $updated_data = clone($object);
     delete $updated_data->{links};
     delete $updated_data->{metadata};
     delete $updated_data->{error};
     $updated_data = { %$updated_data, %$object_data };
 
-    my $res = $self->put($url, $updated_data);
+    my $params = $self->user_agent->www_form_urlencode( $query_params );
+    my $res = $self->put("$url?$params", $updated_data);
     my $code = $res->code;
     my $data = $res->data;
     my $errmsg = ref $data eq 'HASH'
@@ -409,12 +410,12 @@ sub get_accessrule ($self, $accesspolicy_id, $id, $query_params = {}) {
 
 =method update_accessrule
 
-Takes an access policy id, rule object and a hashref of the rule and returns
-a hashref of the updated access rule.
+Takes an access policy id, rule object, a hashref of the rule and an optional
+hashref of query parameters and returns a hashref of the updated access rule.
 
 =cut
 
-sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
+sub update_accessrule ($self, $accesspolicy_id, $object, $object_data, $query_params = {}) {
     my $id = $object->{id};
     my $fmc_rule = clone($object);
     for my $user ($fmc_rule->{users}->{objects}->@*) {
@@ -428,7 +429,7 @@ sub update_accessrule ($self, $accesspolicy_id, $object, $object_data) {
         $accesspolicy_id,
         'accessrules',
         $id
-    ), $fmc_rule, $object_data);
+    ), $fmc_rule, $object_data, $query_params);
 }
 
 =method delete_accessrule

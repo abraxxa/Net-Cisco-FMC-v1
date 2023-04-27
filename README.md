@@ -80,8 +80,8 @@ rule.
 
 ## update\_accessrule
 
-Takes an access policy id, rule object and a hashref of the rule and returns
-a hashref of the updated access rule.
+Takes an access policy id, rule object, a hashref of the rule and an optional
+hashref of query parameters and returns a hashref of the updated access rule.
 
 ## delete\_accessrule
 
