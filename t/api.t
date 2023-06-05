@@ -302,6 +302,14 @@ SKIP: {
         },
     ), 'identity rule created');
 
+    ok(my $updated_identity_rule = $fmc->update_accessrule(
+        $identity_test_policy->{id},
+        $identity_rule,
+        {
+            enabled => JSON->boolean(0),
+        },
+    ), 'update_accessrule ok');
+
     END {
         $fmc->delete_accessrule($identity_test_policy->{id}, $identity_rule->{id})
             if defined $identity_rule;

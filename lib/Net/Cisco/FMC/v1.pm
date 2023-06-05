@@ -437,10 +437,6 @@ hashref of query parameters and returns a hashref of the updated access rule.
 
 sub update_accessrule ($self, $accesspolicy_id, $object, $object_data, $query_params = {}) {
     my $id = $object->{id};
-    my $fmc_rule = clone($object);
-    for my $user ($fmc_rule->{users}->{objects}->@*) {
-        delete $user->{realm};
-    }
     return $self->_update(join('/',
         '/api/fmc_config/v1/domain',
         $self->domain_uuid,
@@ -449,7 +445,7 @@ sub update_accessrule ($self, $accesspolicy_id, $object, $object_data, $query_pa
         $accesspolicy_id,
         'accessrules',
         $id
-    ), $fmc_rule, $object_data, $query_params);
+    ), $object, $object_data, $query_params);
 }
 
 =method delete_accessrule
