@@ -289,6 +289,26 @@ Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
         object   => 'policyassignments',
         singular => 'policyassignment',
     },
+    {
+        path     => 'object',
+        object   => 'realms',
+        singular => 'realm',
+    },
+    {
+        path     => 'object',
+        object   => 'realmusers',
+        singular => 'realmuser',
+    },
+    {
+        path     => 'object',
+        object   => 'realmusergroups',
+        singular => 'realmusergroup',
+    },
+    {
+        path     => 'policy',
+        object   => 'identitypolicies',
+        singular => 'identitypolicy',
+    },
 ]);
 
 =method login

@@ -2,6 +2,7 @@ Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
     - add support for query parameters to update_accessrule
+    - add methods for identity policies, realms, realmusers and realmusergroups
 
 0.008000  2023-01-26 16:10:57+01:00 Europe/Vienna
     - add methods for FQDNs
