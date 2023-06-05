@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+
+0.009001  2023-06-05 13:55:03+02:00 Europe/Vienna
     - fix update_accessrule when rule contains users
       This reverts the fix from version 0.004001 which removed the realm of
       each user object to prevent an 'Unprocessable Entity' error.
