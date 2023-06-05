@@ -4,7 +4,7 @@ Net::Cisco::FMC::v1 - Cisco Firepower Management Center (FMC) API version 1 clie
 
 # VERSION
 
-version 0.008000
+version 0.009000
 
 # SYNOPSIS
 
@@ -34,7 +34,7 @@ $fmc->domain_uuid("e276abec-e0f2-11e3-8169-6d9ed49b625f");
 
 This module is a client library for the Cisco Firepower Management
 Center (FMC) REST API version 1.
-Currently it is developed and tested against FMC version 7.0.4.
+Currently it is developed and tested against FMC version 7.2.0.1.
 
 # ATTRIBUTES
 
