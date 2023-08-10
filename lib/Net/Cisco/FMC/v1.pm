@@ -336,7 +336,10 @@ sub login($self) {
             $res->response->header('x-auth-access-token'));
     }
     else {
-        croak($res->data->{error}->{messages}[0]->{description});
+        my $errmsg = ref $res->data eq 'HASH'
+            ? $res->data->{error}->{messages}[0]->{description}
+            : $res->data;
+        croak($errmsg);
     }
 }
 

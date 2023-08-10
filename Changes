@@ -1,6 +1,7 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+    - fix login error handling of connection errors
 
 0.009001  2023-06-05 13:55:03+02:00 Europe/Vienna
     - fix update_accessrule when rule contains users
