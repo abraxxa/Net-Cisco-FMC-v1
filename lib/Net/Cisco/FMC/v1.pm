@@ -183,7 +183,7 @@ sub _delete ($self, $url) {
     return 1;
 }
 
-Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
+Net::Cisco::FMC::v1::Role::ObjectMethods->apply_roles_to_target([
     {
         path     => 'object',
         object   => 'portobjectgroups',
