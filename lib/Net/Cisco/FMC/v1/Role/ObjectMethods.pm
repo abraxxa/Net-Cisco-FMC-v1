@@ -18,20 +18,18 @@ requires qw( _create _list _get _update _delete );
     package Net::Cisco::FMC::v1;
     use Moo;
     use Net::Cisco::FMC::v1::Role::ObjectMethods;
+    use MooX::Role::Parameterized::With;
 
-    Net::Cisco::FMC::v1::Role::ObjectMethods->apply([
-        {
+    with "Net::Cisco::FMC::v1::Role::ObjectMethods" => {
             path     => 'object',
             object   => 'portobjectgroups',
             singular => 'portobjectgroup',
         },
-        {
+        "Net::Cisco::FMC::v1::Role::ObjectMethods" => {
             path     => 'object',
             object   => 'protocolportobjects',
             singular => 'protocolportobject',
-        }
-    ]);
-
+        };
     1;
 
 =head1 DESCRIPTION
