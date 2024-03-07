@@ -472,6 +472,103 @@ sub delete_accessrule ($self, $accesspolicy_id, $id) {
     ));
 }
 
+=method create_accesspolicy_category
+
+Takes an access policy id, a hashref of the category which should be created and
+optional query parameters.
+
+=cut
+
+sub create_accesspolicy_category ($self, $accesspolicy_id, $object_data, $query_params = {}) {
+    return $self->_create(join('/',
+            '/api/fmc_config/v1/domain',
+            $self->domain_uuid,
+            'policy',
+            'accesspolicies',
+            $accesspolicy_id,
+            'categories'
+        ), $object_data, $query_params);
+}
+
+=method list_accesspolicy_categories
+
+Takes an access policy id and query parameters and returns a hashref with a
+single key 'items' that has a list of categories similar to the FMC API.
+
+=cut
+
+sub list_accesspolicy_categories ($self, $accesspolicy_id, $query_params = {}) {
+    return $self->_list(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'categories'
+    ), $query_params);
+}
+
+=method get_accesspolicy_category
+
+Takes an access policy id, category id and query parameters and returns the
+category.
+
+=cut
+
+sub get_accesspolicy_category ($self, $accesspolicy_id, $id, $query_params = {}) {
+    return $self->_get(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'categories',
+        $id
+    ), $query_params);
+}
+
+=method update_accesspolicy_category
+
+Takes an access policy id, category object, a hashref of the category and an
+optional hashref of query parameters and returns a hashref of the updated
+category.
+
+=cut
+
+sub update_accesspolicy_category ($self, $accesspolicy_id, $object, $object_data, $query_params = {}) {
+    my $id = $object->{id};
+    return $self->_update(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'categories',
+        $id
+    ), $object, $object_data, $query_params);
+}
+
+=method delete_accesspolicy_category
+
+Takes an access policy id and a category id.
+
+Returns true on success.
+
+=cut
+
+
+sub delete_accesspolicy_category ($self, $accesspolicy_id, $id) {
+    return $self->_delete(join('/',
+        '/api/fmc_config/v1/domain',
+        $self->domain_uuid,
+        'policy',
+        'accesspolicies',
+        $accesspolicy_id,
+        'categories',
+        $id
+    ));
+}
+
 =method list_deployabledevices
 
 Takes optional query parameters and returns a hashref with a

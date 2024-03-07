@@ -89,6 +89,33 @@ Takes an access policy id and a rule object id.
 
 Returns true on success.
 
+## create\_accesspolicy\_category
+
+Takes an access policy id, a hashref of the category which should be created and
+optional query parameters.
+
+## list\_accesspolicy\_categories
+
+Takes an access policy id and query parameters and returns a hashref with a
+single key 'items' that has a list of categories similar to the FMC API.
+
+## get\_accesspolicy\_category
+
+Takes an access policy id, category id and query parameters and returns the
+category.
+
+## update\_accesspolicy\_category
+
+Takes an access policy id, category object, a hashref of the category and an
+optional hashref of query parameters and returns a hashref of the updated
+category.
+
+## delete\_accesspolicy\_category
+
+Takes an access policy id and a category id.
+
+Returns true on success.
+
 ## list\_deployabledevices
 
 Takes optional query parameters and returns a hashref with a
