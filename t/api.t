@@ -1,5 +1,4 @@
 use Test2::V0;
-use Test2::Tools::Compare qw( array hash D );
 use Net::Cisco::FMC::v1;
 use JSON qw();
 
