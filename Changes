@@ -1,6 +1,8 @@
 Revision history for Net-Cisco-FMC-v1: {{ $dist->version }}
 
 {{ $NEXT }}
+
+0.010000  2024-03-07 18:39:58+01:00 Europe/Vienna
     - add methods for accesspolicy categories
 
 0.009002  2023-08-10 16:53:48+02:00 Europe/Vienna
