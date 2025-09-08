@@ -14,7 +14,7 @@ no warnings "experimental::signatures";
 with 'Role::REST::Client';
 with 'Role::REST::Client::Auth::Basic';
 
-# has be be after with 'Role::REST::Client::Auth::Basic'; to be called before
+# has to be after "with 'Role::REST::Client::Auth::Basic';" to be called before
 # its method modifier
 before '_call' => sub {
     # disable http basic auth by default because only the generatetoken call
